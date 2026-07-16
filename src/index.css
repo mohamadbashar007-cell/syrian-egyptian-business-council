@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Cairo", ui-sans-serif, system-ui, sans-serif;
+  --color-green-primary: #1A5C3A;
+  --color-green-dark: #133F28;
+  --color-green-light: #E8F5EE;
+  --color-gold-custom: #C9A84C;
+  --color-white-pure: #FFFFFF;
+  --color-gray-bg: #F6F7F4;
+  --color-border-subtle: #E0E0E0;
+  --color-text-dark: #1A1A1A;
+  --color-text-muted: #6B7280;
+  
+  --shadow-theme-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-theme-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+body {
+  @apply font-sans text-text-dark bg-gray-bg;
+  direction: rtl;
+  margin: 0;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+
+.islamic-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cpath d='M80 0L92.7 22.4L117.9 14.1L121.6 40L145.9 44.1L137.6 69.3L160 82L137.6 94.7L145.9 119.9L121.6 124L117.9 149.9L92.7 141.6L80 164L67.3 141.6L42.1 149.9L38.4 124L14.1 119.9L22.4 94.7L0 82L22.4 69.3L14.1 44.1L38.4 40L42.1 14.1L67.3 22.4Z' fill='none' stroke='%23ffffff' stroke-opacity='0.1' stroke-width='1.5'/%3E%3Cpath d='M80 20L89 36.8L108 30.6L110.8 50L129 53.1L122.8 72L139.6 81.5L122.8 91L129 109.9L110.8 113L108 132.4L89 126.2L80 143L71 126.2L52 132.4L49.2 113L31 109.9L37.2 91L20.4 81.5L37.2 72L31 53.1L49.2 50L52 30.6L71 36.8Z' fill='none' stroke='%23ffffff' stroke-opacity='0.05' stroke-width='1'/%3E%3C/svg%3E");
+  background-position: center;
+  background-size: 140px;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Custom layout patterns from Natural Tones */
+.sections-grid-layout {
+  @apply grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-5 container mx-auto px-10 py-5;
+}
