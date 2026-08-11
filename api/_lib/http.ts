@@ -12,6 +12,36 @@ export interface ApiResponse {
   end?(): void;
 }
 
+function firstHeader(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+export function clientAddress(request: ApiRequest) {
+  return request.socket?.remoteAddress || 'unknown';
+}
+
+export function hasTrustedOrigin(request: ApiRequest) {
+  const fetchSite = firstHeader(request.headers['sec-fetch-site']);
+  if (fetchSite && !['same-origin', 'none'].includes(fetchSite.toLowerCase())) return false;
+
+  const origin = firstHeader(request.headers.origin);
+  if (!origin) return true;
+
+  const host = firstHeader(request.headers.host)?.toLowerCase();
+  if (!host) return false;
+  try {
+    return new URL(origin).host.toLowerCase() === host;
+  } catch {
+    return false;
+  }
+}
+
+export function requireTrustedOrigin(request: ApiRequest, response: ApiResponse) {
+  if (hasTrustedOrigin(request)) return true;
+  response.status(403).json({ success: false, message: 'تم رفض الطلب لأنه صادر من موقع غير موثوق.' });
+  return false;
+}
+
 export function readJsonBody<T>(request: ApiRequest): T {
   if (typeof request.body === 'string') return JSON.parse(request.body) as T;
   return (request.body ?? {}) as T;

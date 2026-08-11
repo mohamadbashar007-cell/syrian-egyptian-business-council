@@ -1,16 +1,7 @@
 import nodemailer from 'nodemailer';
+import type { ApiRequest, ApiResponse } from './_lib/http';
+import { clientAddress, noStore } from './_lib/http';
 import { saveContactMessage } from './_lib/messages-store';
-
-interface ApiRequest {
-  method?: string;
-  body?: unknown;
-}
-
-interface ApiResponse {
-  setHeader(name: string, value: string | string[]): void;
-  status(code: number): ApiResponse;
-  json(body: Record<string, unknown>): void;
-}
 
 interface ContactPayload {
   name?: unknown;
@@ -21,6 +12,33 @@ interface ContactPayload {
 }
 
 const allowedSubjects = new Set(['استفسار عام', 'فرصة استثمارية', 'طلب عضوية', 'شراكة استراتيجية', 'أخرى']);
+const contactAttempts = new Map<string, { count: number; resetAt: number }>();
+const CONTACT_WINDOW_MS = 15 * 60 * 1000;
+const MAX_CONTACT_ATTEMPTS = 5;
+
+function consumeContactAttempt(request: ApiRequest, response: ApiResponse) {
+  const now = Date.now();
+  const address = clientAddress(request);
+  const current = contactAttempts.get(address);
+
+  if (current && current.resetAt > now && current.count >= MAX_CONTACT_ATTEMPTS) {
+    response.setHeader('Retry-After', String(Math.ceil((current.resetAt - now) / 1000)));
+    response.status(429).json({ success: false, message: 'تم إرسال عدة رسائل. يرجى المحاولة لاحقاً.' });
+    return false;
+  }
+
+  if (contactAttempts.size > 1_000) {
+    for (const [key, value] of contactAttempts) {
+      if (value.resetAt <= now) contactAttempts.delete(key);
+    }
+  }
+
+  contactAttempts.set(address, {
+    count: current && current.resetAt > now ? current.count + 1 : 1,
+    resetAt: current && current.resetAt > now ? current.resetAt : now + CONTACT_WINDOW_MS,
+  });
+  return true;
+}
 
 function cleanText(value: unknown, maxLength: number) {
   return typeof value === 'string' ? value.trim().slice(0, maxLength) : '';
@@ -36,7 +54,7 @@ function escapeHtml(value: string) {
 }
 
 export default async function handler(request: ApiRequest, response: ApiResponse) {
-  response.setHeader('Cache-Control', 'no-store');
+  noStore(response);
 
   if (request.method !== 'POST') {
     response.setHeader('Allow', 'POST');
@@ -57,6 +75,7 @@ export default async function handler(request: ApiRequest, response: ApiResponse
   if (name.length < 2 || !emailPattern.test(email) || !allowedSubjects.has(subject) || message.length < 10) {
     return response.status(400).json({ success: false, message: 'يرجى التحقق من البيانات وإعادة المحاولة.' });
   }
+  if (!consumeContactAttempt(request, response)) return;
 
   try {
     await saveContactMessage({ name, email, subject, message });
@@ -65,7 +84,7 @@ export default async function handler(request: ApiRequest, response: ApiResponse
   }
 
   const requiredEnvironment = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS', 'SMTP_FROM'];
-  if (requiredEnvironment.some((key) => !process.env[key])) {
+  if (requiredEnvironment.some((key) => !process.env[key]) || process.env.SMTP_PASS === 'كلمة*مرور*البريد') {
     return response.status(200).json({ success: true, message: 'تم استلام رسالتك بنجاح وسنتواصل معك قريبًا.' });
   }
 

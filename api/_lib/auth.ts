@@ -1,5 +1,6 @@
 import { createHash, createHmac, scryptSync, timingSafeEqual } from 'node:crypto';
 import type { ApiRequest, ApiResponse } from './http';
+import { requireTrustedOrigin } from './http';
 
 const COOKIE_NAME = 'segybc_admin';
 const SESSION_DURATION_SECONDS = 8 * 60 * 60;
@@ -86,6 +87,7 @@ export function clearSessionCookie(request: ApiRequest, response: ApiResponse) {
 }
 
 export function requireAdmin(request: ApiRequest, response: ApiResponse) {
+  if (!requireTrustedOrigin(request, response)) return false;
   if (!authIsConfigured()) {
     response.status(503).json({ success: false, message: 'لوحة الإدارة غير مهيأة بعد.' });
     return false;

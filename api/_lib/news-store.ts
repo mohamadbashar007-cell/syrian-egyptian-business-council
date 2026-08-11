@@ -27,10 +27,10 @@ function cleanText(value: unknown, maxLength: number) {
 }
 
 function validUrl(value: string, allowLocal = false) {
-  if (allowLocal && value.startsWith('/')) return true;
+  if (allowLocal && value.startsWith('/uploads/news/') && !value.includes('\\')) return true;
   try {
     const url = new URL(value);
-    return url.protocol === 'https:' || url.protocol === 'http:';
+    return url.protocol === 'https:';
   } catch {
     return false;
   }
