@@ -27,7 +27,13 @@ export default function Contact() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      const result = (await response.json()) as { success?: boolean; message?: string };
+      const responseText = await response.text();
+      let result: { success?: boolean; message?: string };
+      try {
+        result = JSON.parse(responseText) as { success?: boolean; message?: string };
+      } catch {
+        throw new Error('خدمة استقبال الرسائل غير متاحة عبر نسخة التشغيل الحالية.');
+      }
 
       if (!response.ok || !result.success) throw new Error(result.message || 'تعذّر إرسال الرسالة.');
 
@@ -108,7 +114,7 @@ export default function Contact() {
                        </div>
                        <div className="flex flex-col">
                           <span className="text-[12px] opacity-60 mb-1">المكتب الرئيسي</span>
-                          <span className="text-[15px] font-medium leading-relaxed">جمهورية مصر العربية، القاهرة <br /> مدينة السادس من أكتوبر - الحي المتميز</span>
+                          <span className="text-[15px] font-medium leading-relaxed">جمهورية مصر العربية</span>
                        </div>
                     </div>
 

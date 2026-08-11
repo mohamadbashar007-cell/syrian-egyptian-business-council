@@ -56,7 +56,7 @@ export default function Footer() {
           <div>
             <h4 className="mb-5 text-[14px] font-black text-gold-custom">بيانات التواصل</h4>
             <ul className="space-y-4 text-[13px] text-white/65">
-              <li className="flex items-start gap-3"><MapPin size={17} className="mt-0.5 shrink-0 text-gold-custom" /> القاهرة، جمهورية مصر العربية</li>
+              <li className="flex items-start gap-3"><MapPin size={17} className="mt-0.5 shrink-0 text-gold-custom" /> جمهورية مصر العربية</li>
               <li><a href="mailto:info@segybc.com" className="flex items-center gap-3 transition-colors hover:text-white" dir="ltr"><Mail size={17} className="text-gold-custom" /> info@segybc.com</a></li>
             </ul>
             <Link to="/contact" className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-[12px] font-extrabold transition-all hover:border-gold-custom hover:bg-gold-custom hover:text-green-dark">

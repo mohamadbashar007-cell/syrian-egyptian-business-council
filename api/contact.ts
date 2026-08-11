@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { saveContactMessage } from './_lib/messages-store';
 
 interface ApiRequest {
   method?: string;
@@ -57,14 +58,20 @@ export default async function handler(request: ApiRequest, response: ApiResponse
     return response.status(400).json({ success: false, message: 'يرجى التحقق من البيانات وإعادة المحاولة.' });
   }
 
+  try {
+    await saveContactMessage({ name, email, subject, message });
+  } catch {
+    return response.status(500).json({ success: false, message: 'تعذّر حفظ رسالتك حاليًا. يرجى المحاولة لاحقًا.' });
+  }
+
   const requiredEnvironment = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS', 'SMTP_FROM'];
   if (requiredEnvironment.some((key) => !process.env[key])) {
-    return response.status(503).json({ success: false, message: 'خدمة البريد غير مهيأة حاليًا.' });
+    return response.status(200).json({ success: true, message: 'تم استلام رسالتك بنجاح وسنتواصل معك قريبًا.' });
   }
 
   const port = Number(process.env.SMTP_PORT);
   if (!Number.isInteger(port)) {
-    return response.status(503).json({ success: false, message: 'إعدادات خدمة البريد غير صحيحة.' });
+    return response.status(200).json({ success: true, message: 'تم استلام رسالتك بنجاح وسنتواصل معك قريبًا.' });
   }
 
   const transporter = nodemailer.createTransport({
@@ -112,6 +119,7 @@ export default async function handler(request: ApiRequest, response: ApiResponse
 
     return response.status(200).json({ success: true, message: 'تم إرسال رسالتك بنجاح.' });
   } catch {
-    return response.status(502).json({ success: false, message: 'تعذّر إرسال الرسالة حاليًا. يرجى المحاولة لاحقًا.' });
+    // The message is already safely stored on this device even if SMTP is temporarily unavailable.
+    return response.status(200).json({ success: true, message: 'تم استلام رسالتك بنجاح وسنتواصل معك قريبًا.' });
   }
 }
