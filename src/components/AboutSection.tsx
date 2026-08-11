@@ -1,65 +1,51 @@
 import { ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import BrandMark from './BrandMark';
+import Reveal from './Reveal';
+
+const stats = [
+  { value: '6', label: 'أعضاء مجلس الإدارة' },
+  { value: '2026', label: 'عام الاعتماد الرسمي' },
+  { value: '83', label: 'رقم القرار الوزاري' },
+];
 
 export default function AboutSection() {
   return (
-    <section className="py-20 bg-gray-bg">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col lg:flex-row gap-16 items-center">
-          {/* Main Text */}
-          <div className="w-full lg:w-3/5">
-            <h2 className="text-[30px] font-extrabold text-text-dark mb-6 relative inline-block">
-              من نحن
-              <div className="absolute -bottom-2 right-0 h-[4px] w-12 bg-gold-custom"></div>
-            </h2>
-            <p className="text-[18px] text-text-dark leading-relaxed font-medium mb-6">
-              يمثّل مجلس الأعمال السوري المصري الجسر الرسمي للتعاون الاقتصادي بين المجتمع التجاري السوري ونظيره المصري.
-            </p>
-            <p className="text-[16px] text-text-muted leading-relaxed mb-8">
-              يعمل المجلس تحت إشراف وزارة الاقتصاد والصناعة في الجمهورية العربية السورية، ويسعى إلى تعزيز العلاقات التجارية والاستثمارية بين البلدين الشقيقين وفق أُطر قانونية وتنظيمية محكمة، وتوفير الدعم اللازم لرجال الأعمال والمستثمرين لتوسيع آفاق التعاون الصناعي والتجاري المشترك.
-            </p>
-            <Link to="/about" className="bg-white border-2 border-green-primary text-green-primary px-8 py-3 rounded text-[15px] font-bold hover:bg-green-primary hover:text-white transition-all inline-flex items-center gap-2 group">
-              <span>اعرف أكثر عن المجلس</span>
-              <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-            </Link>
-          </div>
-
-          {/* Stats Card */}
-          <div className="w-full lg:w-2/5">
-            <div className="bg-green-primary islamic-pattern rounded-2xl p-8 text-white relative shadow-2xl overflow-hidden group">
-               <div className="absolute -top-10 -left-10 w-40 h-40 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-all duration-700"></div>
-               
-               <h3 className="text-[20px] font-bold mb-8 flex items-center justify-between border-b border-white/20 pb-4">
-                 حقائق وإحصاءات
-                 <img src="/logo.png" alt="Logo" className="w-[40px] h-[40px] brightness-0 invert opacity-40" />
-               </h3>
-               
-               <div className="flex flex-col gap-6">
-                  {[
-                    { value: '6', label: 'أعضاء في مجلس الإدارة' },
-                    { value: '2026', label: 'معتمد رسمياً منذ عام' },
-                    { value: '83', label: 'بموجب قرار وزاري رقم' },
-                  ].map((stat, idx) => (
-                    <div key={idx} className="flex items-center gap-6 group/item">
-                       <div className="w-16 h-16 bg-white/10 rounded-xl flex items-center justify-center font-extrabold text-[24px] text-gold-custom group-hover/item:bg-white/20 transition-all">
-                         {stat.value}
-                       </div>
-                       <div className="flex flex-col">
-                          <div className="flex items-center gap-2 mb-1">
-                            <CheckCircle2 size={16} className="text-gold-custom" />
-                            <span className="text-[14px] opacity-70">إحصائية رسمية</span>
-                          </div>
-                          <span className="text-[18px] font-bold">{stat.label}</span>
-                       </div>
-                    </div>
-                  ))}
-               </div>
-               
-               <div className="mt-10 p-4 border border-white/10 rounded-lg bg-green-dark/40 text-[13px] leading-relaxed opacity-80">
-                 * جميع البيانات المذكورة أعلاه موثقة لدى وزارة الاقتصاد والصناعة ووزارة الخارجية والمغتربين.
-               </div>
+    <section className="relative overflow-hidden bg-white py-20 md:py-28">
+      <div className="absolute -right-36 bottom-0 h-96 w-96 rounded-full bg-gold-custom/[0.07] blur-3xl" />
+      <div className="container relative mx-auto px-4 md:px-10">
+        <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_.95fr] lg:gap-20">
+          <Reveal direction="right">
+            <span className="section-kicker">من نحن</span>
+            <h2 className="mt-4 text-balance text-[31px] font-black leading-tight tracking-tight text-text-dark md:text-[43px]">مظلة رسمية لمجتمع أعمال أكثر ترابطًا</h2>
+            <p className="mt-6 text-[17px] font-semibold leading-8 text-text-dark">يمثّل المجلس الجسر المؤسسي للتعاون الاقتصادي بين المجتمع التجاري السوري ونظيره المصري.</p>
+            <p className="mt-4 text-[15px] leading-8 text-text-muted">نعمل تحت إشراف وزارة الاقتصاد والصناعة لتعزيز العلاقات التجارية والاستثمارية وفق أطر قانونية محكمة، وتوفير الدعم اللازم لتوسيع آفاق التعاون الصناعي والتجاري المشترك.</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link to="/about" className="group inline-flex items-center gap-2 rounded-full bg-green-primary px-6 py-3.5 text-[13px] font-extrabold text-white transition-all hover:-translate-y-1 hover:bg-green-dark">
+                اكتشف هوية المجلس <ArrowLeft size={17} className="transition-transform group-hover:-translate-x-1" />
+              </Link>
+              <div className="inline-flex items-center gap-2 px-3 text-[12px] font-bold text-text-muted"><CheckCircle2 size={17} className="text-gold-custom" /> بيانات موثقة رسميًا</div>
             </div>
-          </div>
+          </Reveal>
+
+          <Reveal direction="left" delay={0.1}>
+            <div className="relative overflow-hidden rounded-[2rem] bg-green-dark p-7 text-white shadow-[0_28px_75px_-30px_rgba(7,60,43,.65)] islamic-pattern md:p-9">
+              <div className="absolute -left-20 -top-20 h-56 w-56 rounded-full bg-gold-custom/15 blur-3xl" />
+              <div className="relative mb-8 flex items-center justify-between border-b border-white/10 pb-6">
+                <div><span className="text-[11px] font-bold text-gold-custom">بالأرقام</span><h3 className="mt-1 text-[21px] font-black">حقائق عن المجلس</h3></div>
+                <BrandMark compact className="ring-4 ring-white/5" />
+              </div>
+              <div className="relative grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+                {stats.map((stat, index) => (
+                  <div key={stat.label} className="group rounded-2xl border border-white/10 bg-white/[0.06] p-5 transition-colors hover:bg-white/[0.11]">
+                    <div className="mb-3 font-serif text-[30px] font-bold text-gold-custom">{stat.value}</div>
+                    <div className="text-[11px] font-semibold leading-5 text-white/65">{stat.label}</div>
+                    <div className="mt-4 h-0.5 w-6 bg-gold-custom/60 transition-all duration-500 group-hover:w-12" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>

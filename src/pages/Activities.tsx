@@ -1,42 +1,27 @@
 import Layout from '../components/Layout';
 import { useState } from 'react';
 import { Calendar, Tag, ArrowLeft } from 'lucide-react';
-
-const activities = [
-  { id: 1, title: 'الاجتماع التأسيسي الأول للمجلس بالقاهرة', category: 'اجتماعات', date: '2026-05-03', image: 'https://images.unsplash.com/photo-1556761175-4b46a572b786?q=80&w=1600&auto=format&fit=crop' },
-  { id: 2, title: 'لقاء وفد المجلس مع وزير الاقتصاد المصري', category: 'لقاءات رسمية', date: '2026-04-20', image: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=1600&auto=format&fit=crop' },
-  { id: 3, title: 'توقيع اتفاقية تعاون مع الغرفة التجارية', category: 'مذكرات تفاهم', date: '2026-04-10', image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=1600&auto=format&fit=crop' },
-  { id: 4, title: 'زيارة ميدانية لمصانع سورية في العاشر من رمضان', category: 'زيارات ميدانية', date: '2026-03-15', image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1600&auto=format&fit=crop' },
-  { id: 5, title: 'المشاركة في منتدى الأعمال المصري السوري بالقاهرة', category: 'مؤتمرات', date: '2026-02-28', image: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=1600&auto=format&fit=crop' },
-  { id: 6, title: 'ورشة عمل حول قوانين الاستثمار الجديدة في مصر', category: 'لقاءات', date: '2026-01-20', image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=1600&auto=format&fit=crop' },
-];
+import { AnimatePresence, motion } from 'motion/react';
+import PageHero from '../components/PageHero';
+import { councilActivities } from '../data/activities';
+import { Link } from 'react-router-dom';
 
 export default function Activities() {
   const [filter, setFilter] = useState('all');
-  const categories = ['all', 'مؤتمرات', 'لقاءات', 'مذكرات تفاهم', 'اجتماعات'];
+  const categories = ['all', 'معارض', 'زيارات رسمية', 'اجتماعات'];
 
   return (
     <Layout>
-      {/* Hero */}
-      <div className="bg-green-primary islamic-pattern py-20 text-white text-center">
-        <div className="container mx-auto px-4">
-          <h1 className="text-[36px] font-extrabold mb-4">الأنشطة والفعاليات</h1>
-          <div className="flex items-center justify-center gap-2 text-[14px] opacity-70">
-            <span>الرئيسية</span>
-            <span>/</span>
-            <span className="text-gold-custom">أعمال المجلس</span>
-          </div>
-        </div>
-      </div>
+      <PageHero eyebrow="أعمال المجلس" title="أنشطة تحوّل الحوار إلى شراكات" description="تابع اجتماعات المجلس وملتقياته وزياراته الميدانية التي تجمع مجتمع الأعمال وصنّاع القرار." image="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=1800&auto=format&fit=crop" />
 
-      <div className="container mx-auto px-4 py-20">
+      <div className="container mx-auto px-4 py-20 md:px-10 md:py-24">
         {/* Filters */}
-        <div className="flex flex-wrap justify-center gap-4 mb-16">
+        <div className="mb-14 flex flex-wrap justify-center gap-3 rounded-2xl border border-border-subtle bg-white p-3 shadow-sm">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setFilter(cat)}
-              className={`px-8 py-2.5 rounded-full text-[14px] font-bold transition-all border ${
+              className={`rounded-full border px-7 py-2.5 text-[13px] font-extrabold transition-all ${
                 filter === cat 
                 ? 'bg-green-primary text-white border-green-primary' 
                 : 'bg-white text-text-muted border-gray-200 hover:border-green-primary hover:text-green-primary'
@@ -48,11 +33,12 @@ export default function Activities() {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {activities.filter(a => filter === 'all' || a.category === filter).map((item) => (
-            <div key={item.id} className="bg-white border border-gray-100 rounded-lg overflow-hidden group shadow-sm hover:shadow-xl transition-all">
+        <motion.div layout className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3">
+          <AnimatePresence mode="popLayout">
+          {councilActivities.filter(a => filter === 'all' || a.category === filter).map((item) => (
+            <motion.article layout initial={{ opacity: 0, scale: .96 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: .96 }} transition={{ duration: .3 }} key={item.id} className="premium-card group overflow-hidden rounded-2xl bg-white">
                <div className="relative h-[240px] overflow-hidden">
-                 <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                 <img loading="lazy" src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                  <div className="absolute top-4 right-4 bg-white/90 text-text-dark text-[11px] px-3 py-1 rounded font-bold backdrop-blur-sm shadow-sm flex items-center gap-2">
                    <Tag size={12} className="text-gold-custom" />
                    {item.category}
@@ -66,14 +52,16 @@ export default function Activities() {
                  <h3 className="text-[18px] font-bold text-text-dark mb-6 leading-snug group-hover:text-green-primary transition-colors">
                    {item.title}
                  </h3>
-                 <button className="text-green-primary font-bold text-[14px] flex items-center gap-2 group/btn">
+                 <p className="mb-6 line-clamp-3 text-[13px] leading-7 text-text-muted">{item.summary}</p>
+                 <Link to={`/news/${item.id}`} className="group/btn flex items-center gap-2 text-[14px] font-bold text-green-primary">
                     <span>تفاصيل الفعالية</span>
                     <ArrowLeft size={16} className="group-hover/btn:-translate-x-1 transition-transform" />
-                 </button>
+                 </Link>
                </div>
-            </div>
+            </motion.article>
           ))}
-        </div>
+          </AnimatePresence>
+        </motion.div>
       </div>
     </Layout>
   );

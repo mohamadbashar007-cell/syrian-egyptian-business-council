@@ -1,3 +1,5 @@
+import { councilActivities } from './activities';
+
 export type NewsCategory = 'أخبار المجلس' | 'فعاليات' | 'بيانات صحفية' | 'استثمار';
 
 export interface NewsItem {
@@ -6,77 +8,58 @@ export interface NewsItem {
   date: string;
   category: NewsCategory;
   summary: string;
+  content?: string[];
   image: string;
+  sourceUrl?: string;
   featured?: boolean;
 }
 
+const categoryMap: Record<string, NewsCategory> = {
+  معارض: 'فعاليات',
+  'زيارات رسمية': 'أخبار المجلس',
+  اجتماعات: 'أخبار المجلس',
+};
+
 export const fallbackNews: NewsItem[] = [
-  {
-    id: 1,
-    title: 'المجلس يعقد اجتماعه التأسيسي الأول في القاهرة ويعتمد خطة العمل',
-    date: '2026-05-03',
-    category: 'أخبار المجلس',
-    summary:
-      'ناقش أعضاء المجلس خارطة الطريق للمرحلة القادمة، وآليات دعم المستثمرين السوريين والمصريين، وتأسيس قنوات اتصال مباشرة مع الجهات الرسمية وغرف التجارة.',
-    image:
-      'https://images.unsplash.com/photo-1556761175-4b46a572b786?q=80&w=1600&auto=format&fit=crop',
-    featured: true,
-  },
-  {
-    id: 2,
-    title: 'لقاء موسع مع الاتحاد المصري لجمعيات المستثمرين لبحث الشراكات الصناعية',
-    date: '2026-04-25',
-    category: 'فعاليات',
-    summary:
-      'استعرض اللقاء فرص التصنيع المشترك وتبادل الخبرات في المدن الصناعية المصرية، مع التركيز على تسهيل إجراءات التوسع للشركات السورية.',
-    image:
-      'https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=1600&auto=format&fit=crop',
-  },
-  {
-    id: 3,
-    title: 'توقيع مذكرة تفاهم لتعزيز تبادل البيانات والفرص الاستثمارية',
-    date: '2026-04-10',
-    category: 'بيانات صحفية',
-    summary:
-      'تهدف المذكرة إلى بناء قاعدة بيانات مشتركة للفرص الاستثمارية وتنظيم ملتقيات أعمال دورية بين الشركات والمؤسسات الاقتصادية في البلدين.',
-    image:
-      'https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=1600&auto=format&fit=crop',
-  },
-  {
-    id: 4,
-    title: 'زيارة ميدانية لعدد من المصانع في العاشر من رمضان',
-    date: '2026-03-15',
-    category: 'استثمار',
-    summary:
-      'اطلع وفد المجلس على خطوط إنتاج وفرص تعاون في الصناعات الغذائية والنسيجية والتعبئة والتغليف، تمهيداً لإطلاق شراكات إنتاجية مشتركة.',
-    image:
-      'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1600&auto=format&fit=crop',
-  },
-  {
-    id: 5,
-    title: 'المشاركة في منتدى الأعمال السوري المصري بالقاهرة',
-    date: '2026-02-28',
-    category: 'فعاليات',
-    summary:
-      'شارك ممثلو المجلس في جلسات المنتدى لعرض فرص الاستثمار والتبادل التجاري وتقديم تصور عملي لدور القطاع الخاص في تنشيط العلاقات الاقتصادية.',
-    image:
-      'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=1600&auto=format&fit=crop',
-  },
+  ...councilActivities.map((activity, index) => ({
+    id: activity.id,
+    title: activity.title,
+    date: activity.date,
+    category: categoryMap[activity.category],
+    summary: activity.summary,
+    content: activity.content,
+    image: activity.image,
+    sourceUrl: activity.sourceUrl,
+    featured: index === 0,
+  })),
   {
     id: 6,
-    title: 'ورشة عمل حول قوانين الاستثمار وإجراءات تأسيس الشركات في مصر',
-    date: '2026-01-20',
-    category: 'أخبار المجلس',
+    title: 'تشكيل مجلس الأعمال السوري المصري لتعزيز الشراكة الاقتصادية',
+    date: '2026-05-03',
+    category: 'بيانات صحفية',
     summary:
-      'قدمت الورشة شرحاً عملياً للإجراءات القانونية والضريبية والجمركية، مع إجابات مباشرة على أسئلة رجال الأعمال الراغبين في دخول السوق المصري.',
+      'أصدر وزير الاقتصاد والصناعة الدكتور نضال الشعار القرار رقم 83 لعام 2026 بتشكيل مجلس الأعمال السوري المصري، بهدف توسيع التعاون الاقتصادي وفتح آفاق جديدة للتجارة والاستثمار بين البلدين.',
+    content: [
+      'أصدر وزير الاقتصاد والصناعة الدكتور نضال الشعار القرار رقم 83 لعام 2026 القاضي بتشكيل مجلس الأعمال السوري المصري، في خطوة تهدف إلى تطوير التعاون الاقتصادي بين سوريا ومصر.',
+      'يعمل المجلس على تفعيل دور القطاع الخاص وبناء قنوات مباشرة بين رجال الأعمال في البلدين، بما يدعم التبادل التجاري ويوسع فرص الاستثمار ويسهم في تحقيق تكامل اقتصادي أكثر فاعلية.',
+    ],
     image:
-      'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=1600&auto=format&fit=crop',
+      'https://media.licdn.com/dms/image/v2/D4E22AQFpS4xInGeHHA/feedshare-image-high-res/B4EZ.9KRKGJYAU-/0/1785585013759?e=2147483647&v=beta&t=3D1X7T8I2cwY8ZN787K6sY9EYmHzQKynSMtZiVrhzL4',
+    sourceUrl: 'https://www.linkedin.com/feed/update/urn:li:activity:7489286372009357313',
   },
 ];
 
 export async function loadNews(): Promise<NewsItem[]> {
   try {
-    const response = await fetch('/content/news.json', { cache: 'no-store' });
+    const apiResponse = await fetch('/api/news', { cache: 'no-store' });
+    if (apiResponse.ok) {
+      const result = (await apiResponse.json()) as { news?: NewsItem[] };
+      if (Array.isArray(result.news) && result.news.length > 0) {
+        return result.news.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      }
+    }
+
+    const response = await fetch(`${import.meta.env.BASE_URL}content/news.json`, { cache: 'no-store' });
     if (!response.ok) return fallbackNews;
 
     const news = (await response.json()) as NewsItem[];

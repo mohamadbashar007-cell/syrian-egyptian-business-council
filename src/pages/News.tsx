@@ -1,7 +1,10 @@
-import { Calendar, Search } from 'lucide-react';
+import { ArrowLeft, Calendar, Search } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
 import Layout from '../components/Layout';
 import { fallbackNews, loadNews, NewsCategory, NewsItem } from '../data/news';
+import PageHero from '../components/PageHero';
+import { AnimatePresence, motion } from 'motion/react';
 
 const categories: Array<'الكل' | NewsCategory> = ['الكل', 'أخبار المجلس', 'فعاليات', 'بيانات صحفية', 'استثمار'];
 
@@ -28,25 +31,11 @@ export default function News() {
 
   return (
     <Layout>
-      <section className="relative overflow-hidden bg-green-dark py-20 text-white">
-        <img
-          src="https://images.unsplash.com/photo-1495020689067-958852a7765e?q=80&w=1800&auto=format&fit=crop"
-          alt="غرفة أخبار ومواد إعلامية"
-          className="absolute inset-0 h-full w-full object-cover opacity-25"
-        />
-        <div className="absolute inset-0 bg-green-dark/70" />
-        <div className="container relative z-10 mx-auto px-4 text-center md:px-10">
-          <span className="mb-3 block text-[13px] font-extrabold text-gold-custom">الأخبار والبيانات</span>
-          <h1 className="text-[36px] font-black md:text-[50px]">المركز الإعلامي</h1>
-          <p className="mx-auto mt-4 max-w-2xl text-[17px] leading-8 text-white/80">
-            مصدر موحد لمتابعة أخبار المجلس وفعالياته وبياناته الصحفية أولاً بأول.
-          </p>
-        </div>
-      </section>
+      <PageHero eyebrow="الأخبار والبيانات" title="المركز الإعلامي" description="مصدر موحد لمتابعة أخبار المجلس وفعالياته وبياناته الرسمية أولًا بأول." image="https://images.unsplash.com/photo-1495020689067-958852a7765e?q=80&w=1800&auto=format&fit=crop" />
 
       <section className="bg-gray-bg py-14">
         <div className="container mx-auto px-4 md:px-10">
-          <div className="mb-8 grid gap-4 rounded-lg border border-border-subtle bg-white p-4 shadow-sm lg:grid-cols-[1fr_320px]">
+          <div className="mb-10 grid gap-4 rounded-2xl border border-border-subtle bg-white p-4 shadow-[0_16px_45px_-35px_rgba(7,60,43,.5)] lg:grid-cols-[1fr_320px]">
             <div className="flex flex-wrap gap-2">
               {categories.map((category) => (
                 <button
@@ -54,7 +43,7 @@ export default function News() {
                   onClick={() => setActiveCategory(category)}
                   className={`rounded-md px-4 py-2 text-[14px] font-extrabold transition-colors ${
                     activeCategory === category
-                      ? 'bg-green-primary text-white'
+                      ? 'bg-green-primary text-white shadow-md'
                       : 'bg-gray-bg text-text-muted hover:bg-green-light hover:text-green-primary'
                   }`}
                 >
@@ -74,11 +63,14 @@ export default function News() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <motion.div layout className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <AnimatePresence mode="popLayout">
             {filteredNews.map((item) => (
-              <article key={item.id} className="group grid overflow-hidden rounded-lg border border-border-subtle bg-white shadow-sm transition-all hover:shadow-xl md:grid-cols-[230px_1fr]">
+              <motion.article layout initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: .97 }} key={item.id} className="premium-card group grid overflow-hidden rounded-2xl bg-white md:grid-cols-[230px_1fr]">
                 <div className="relative min-h-[230px] overflow-hidden bg-gray-100">
-                  <img src={item.image} alt={item.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <Link to={`/news/${item.id}`} aria-label={item.title}>
+                    <img loading="lazy" src={item.image} alt={item.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  </Link>
                 </div>
                 <div className="flex flex-col p-6">
                   <div className="mb-3 flex flex-wrap items-center gap-3">
@@ -90,14 +82,16 @@ export default function News() {
                       {item.date}
                     </span>
                   </div>
-                  <h2 className="mb-3 text-[20px] font-extrabold leading-snug text-text-dark transition-colors group-hover:text-green-primary">
-                    {item.title}
-                  </h2>
+                  <Link to={`/news/${item.id}`}><h2 className="mb-3 text-[20px] font-extrabold leading-snug text-text-dark transition-colors group-hover:text-green-primary">{item.title}</h2></Link>
                   <p className="line-clamp-3 text-[14px] leading-7 text-text-muted">{item.summary}</p>
+                  <Link to={`/news/${item.id}`} className="mt-auto inline-flex items-center gap-2 pt-5 text-[13px] font-extrabold text-green-primary transition-colors hover:text-green-dark">
+                    اقرأ التفاصيل <ArrowLeft size={15} />
+                  </Link>
                 </div>
-              </article>
+              </motion.article>
             ))}
-          </div>
+            </AnimatePresence>
+          </motion.div>
 
           {filteredNews.length === 0 && (
             <div className="rounded-lg border border-border-subtle bg-white p-10 text-center text-[15px] font-bold text-text-muted">

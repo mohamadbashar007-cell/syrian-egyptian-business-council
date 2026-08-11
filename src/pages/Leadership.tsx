@@ -1,5 +1,7 @@
 import Layout from '../components/Layout';
-import { User, Linkedin, Mail } from 'lucide-react';
+import { User, Mail } from 'lucide-react';
+import PageHero from '../components/PageHero';
+import Reveal from '../components/Reveal';
 
 const leaders = [
   { name: 'السيد غسان كريم', role: 'رئيساً للمجلس', bio: 'رجل أعمال بارز بخبرة تزيد عن 30 عاماً في قطاع الاستثمار والتطوير العقاري.' },
@@ -13,29 +15,21 @@ const leaders = [
 export default function Leadership() {
   return (
     <Layout>
-      {/* Hero */}
-      <div className="bg-green-primary islamic-pattern py-20 text-white text-center">
-        <div className="container mx-auto px-4">
-          <h1 className="text-[36px] font-extrabold mb-4">القيادة</h1>
-          <div className="flex items-center justify-center gap-2 text-[14px] opacity-70">
-            <span>الرئيسية</span>
-            <span>/</span>
-            <span className="text-gold-custom">مجلس الإدارة</span>
-          </div>
-        </div>
-      </div>
+      <PageHero eyebrow="مجلس الإدارة" title="قيادة بخبرة ورؤية مشتركة" description="نخبة من رجال الأعمال والخبرات المؤسسية تقود أعمال المجلس نحو أثر اقتصادي مستدام." />
 
-      <div className="container mx-auto px-4 py-20">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-[28px] font-bold text-text-dark mb-6">مجلس الإدارة والجانب السوري</h2>
+      <div className="container mx-auto px-4 py-20 md:px-10 md:py-24">
+        <Reveal className="mx-auto mb-16 max-w-3xl text-center">
+          <span className="section-kicker mb-3 justify-center">الهيكل القيادي</span>
+          <h2 className="mb-6 text-[30px] font-black text-text-dark">مجلس الإدارة والجانب السوري</h2>
           <p className="text-[16px] text-text-muted leading-relaxed">
             وفقاً للقرار الوزاري رقم 83، يتولى إدارة المجلس نخبة من رجال الأعمال السوريين المشهود لهم بالكفاءة والخبرة الطويلة في الأسواق العربية والمحلية.
           </p>
-        </div>
+        </Reveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
            {leaders.map((leader, idx) => (
-             <div key={idx} className="bg-white border border-gray-100 rounded-xl p-8 flex flex-col items-center text-center hover:shadow-2xl transition-all group relative overflow-hidden">
+             <Reveal key={idx} delay={(idx % 3) * 0.07} className="h-full">
+             <div className="premium-card group relative flex h-full flex-col items-center overflow-hidden rounded-2xl bg-white p-8 text-center">
                 <div className="absolute top-0 right-0 w-24 h-24 bg-green-light rounded-bl-full -z-0 opacity-50 transition-all group-hover:scale-150"></div>
                 
                 <div className="w-24 h-24 bg-green-primary rounded-full flex items-center justify-center text-white mb-6 z-10 border-4 border-white shadow-lg">
@@ -48,15 +42,13 @@ export default function Leadership() {
                   {leader.bio}
                 </p>
                 
-                <div className="flex gap-4 mt-auto z-10">
-                  <a href="#" className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-text-muted hover:bg-green-primary hover:text-white transition-all">
-                    <Linkedin size={14} />
-                  </a>
-                  <a href="#" className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-text-muted hover:bg-green-primary hover:text-white transition-all">
+                <div className="z-10 mt-auto flex gap-4">
+                  <a href="mailto:info@segybc.com" aria-label={`التواصل مع ${leader.name}`} className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 text-text-muted transition-all hover:-translate-y-1 hover:bg-green-primary hover:text-white">
                     <Mail size={14} />
                   </a>
                 </div>
              </div>
+             </Reveal>
            ))}
         </div>
       </div>
