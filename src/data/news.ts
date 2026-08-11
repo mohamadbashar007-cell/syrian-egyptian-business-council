@@ -51,11 +51,13 @@ export const fallbackNews: NewsItem[] = [
 
 export async function loadNews(): Promise<NewsItem[]> {
   try {
-    const apiResponse = await fetch('/api/news', { cache: 'no-store' });
-    if (apiResponse.ok) {
-      const result = (await apiResponse.json()) as { news?: NewsItem[] };
-      if (Array.isArray(result.news) && result.news.length > 0) {
-        return result.news.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    if (import.meta.env.BASE_URL === '/') {
+      const apiResponse = await fetch('/api/news', { cache: 'no-store' });
+      if (apiResponse.ok) {
+        const result = (await apiResponse.json()) as { news?: NewsItem[] };
+        if (Array.isArray(result.news) && result.news.length > 0) {
+          return result.news.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        }
       }
     }
 

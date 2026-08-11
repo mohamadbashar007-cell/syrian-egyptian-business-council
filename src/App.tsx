@@ -11,14 +11,10 @@ import CouncilDesk from './pages/CouncilDesk';
 import NotFound from './pages/NotFound';
 
 export default function App() {
-  const legacyBase = '/syrian-egyptian-business-council';
-  if (window.location.pathname === legacyBase || window.location.pathname.startsWith(`${legacyBase}/`)) {
-    const normalizedPath = window.location.pathname.slice(legacyBase.length) || '/';
-    window.history.replaceState(window.history.state, '', `${normalizedPath}${window.location.search}${window.location.hash}`);
-  }
+  const routerBase = import.meta.env.BASE_URL.replace(/\/$/, '') || '/';
 
   return (
-    <Router>
+    <Router basename={routerBase}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
