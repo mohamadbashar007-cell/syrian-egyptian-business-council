@@ -5,6 +5,7 @@ import Layout from '../components/Layout';
 import { fallbackNews, loadNews, NewsCategory, NewsItem } from '../data/news';
 import PageHero from '../components/PageHero';
 import { AnimatePresence, motion } from 'motion/react';
+import { useLanguage } from '../i18n/LanguageContext';
 
 const categories: Array<'الكل' | NewsCategory> = ['الكل', 'أخبار المجلس', 'فعاليات', 'بيانات صحفية', 'استثمار'];
 
@@ -12,6 +13,7 @@ export default function News() {
   const [activeCategory, setActiveCategory] = useState<'الكل' | NewsCategory>('الكل');
   const [query, setQuery] = useState('');
   const [news, setNews] = useState<NewsItem[]>(fallbackNews);
+  const { t } = useLanguage();
 
   useEffect(() => {
     loadNews().then(setNews);
@@ -23,11 +25,11 @@ export default function News() {
       const matchesCategory = activeCategory === 'الكل' || item.category === activeCategory;
       const matchesSearch =
         normalizedQuery.length === 0 ||
-        `${item.title} ${item.summary} ${item.category}`.toLowerCase().includes(normalizedQuery);
+        `${item.title} ${item.summary} ${item.category} ${t(item.title)} ${t(item.summary)} ${t(item.category)}`.toLowerCase().includes(normalizedQuery);
 
       return matchesCategory && matchesSearch;
     });
-  }, [activeCategory, news, query]);
+  }, [activeCategory, news, query, t]);
 
   return (
     <Layout>

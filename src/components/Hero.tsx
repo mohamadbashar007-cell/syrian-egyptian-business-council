@@ -3,11 +3,13 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fallbackNews, loadNews, NewsItem } from '../data/news';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export default function Hero() {
   const [slides, setSlides] = useState<NewsItem[]>(fallbackNews.slice(0, 3));
   const [current, setCurrent] = useState(0);
   const reduceMotion = useReducedMotion();
+  const { isArabic } = useLanguage();
 
   useEffect(() => {
     loadNews().then((items) => {
@@ -40,7 +42,7 @@ export default function Hero() {
           />
         </motion.div>
       </AnimatePresence>
-      <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(7,60,43,.28)_0%,rgba(7,60,43,.82)_58%,rgba(4,32,23,.97)_100%)]" />
+      <div className={`absolute inset-0 -z-10 ${isArabic ? 'bg-[linear-gradient(90deg,rgba(7,60,43,.28)_0%,rgba(7,60,43,.82)_58%,rgba(4,32,23,.97)_100%)]' : 'bg-[linear-gradient(270deg,rgba(7,60,43,.28)_0%,rgba(7,60,43,.82)_58%,rgba(4,32,23,.97)_100%)]'}`} />
       <div className="absolute inset-0 -z-10 islamic-pattern opacity-35" />
       <div className="absolute -right-28 top-20 -z-10 h-[420px] w-[420px] rounded-full border border-white/10" />
       <div className="hero-orbit absolute -right-12 top-36 -z-10 h-[280px] w-[280px] rounded-full border border-dashed border-gold-custom/25" />
@@ -70,7 +72,7 @@ export default function Hero() {
           </motion.div>
 
           <AnimatePresence mode="wait">
-            <motion.div key={slide.id} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -15 }} transition={{ duration: 0.45 }} className="mt-9 max-w-2xl border-r-2 border-gold-custom pr-4">
+            <motion.div key={slide.id} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -15 }} transition={{ duration: 0.45 }} className={`mt-9 max-w-2xl border-gold-custom ${isArabic ? 'border-r-2 pr-4' : 'border-l-2 pl-4'}`}>
               <div className="mb-1.5 flex items-center gap-2 text-[11px] font-bold text-white/55">
                 <Calendar size={13} className="text-gold-custom" /> {slide.date} <span>•</span> {slide.category}
               </div>
@@ -82,8 +84,8 @@ export default function Hero() {
 
       <div className="absolute inset-x-0 bottom-0 z-20 border-t border-white/10 bg-green-dark/70 backdrop-blur-xl">
         <div className="container mx-auto flex min-h-[92px] items-center justify-between gap-5 px-4 md:px-10">
-          <div className="hidden items-center divide-x-reverse divide-x divide-white/10 md:flex">
-            <div className="flex items-center gap-3 px-5 first:pr-0"><Landmark size={22} className="text-gold-custom" /><div><b className="block text-[18px]">83</b><span className="text-[10px] text-white/50">رقم القرار الوزاري</span></div></div>
+          <div className={`hidden items-center divide-x divide-white/10 md:flex ${isArabic ? 'divide-x-reverse' : ''}`}>
+            <div className={`flex items-center gap-3 px-5 ${isArabic ? 'first:pr-0' : 'first:pl-0'}`}><Landmark size={22} className="text-gold-custom" /><div><b className="block text-[18px]">83</b><span className="text-[10px] text-white/50">رقم القرار الوزاري</span></div></div>
             <div className="flex items-center gap-3 px-5"><BriefcaseBusiness size={22} className="text-gold-custom" /><div><b className="block text-[18px]">6+</b><span className="text-[10px] text-white/50">قطاعات استثمارية</span></div></div>
           </div>
           <div className="flex w-full items-center justify-between gap-4 md:w-auto md:justify-end">

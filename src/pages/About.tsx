@@ -37,7 +37,7 @@ export default function About() {
                 <div className="w-12 h-12 bg-gold-custom text-white rounded-lg flex items-center justify-center mb-6">
                   <Target size={24} />
                 </div>
-                <h3 className="text-[20px] font-bold text-text-dark mb-4">الرسالة</h3>
+                <h3 className="text-[20px] font-bold text-text-dark mb-4">رسالتنا</h3>
                 <p className="text-[15px] text-text-muted leading-relaxed">
                   خلق بيئة استثمارية تنافسية ومستدامة من خلال تمثيل مصالح رجال الأعمال، وتوفير كافة أوجه الدعم الفني والقانوني واللوجستي اللازم لنجاح المشاريع المشتركة.
                 </p>

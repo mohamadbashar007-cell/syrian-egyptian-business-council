@@ -5,12 +5,14 @@ import Layout from '../components/Layout';
 import PageHero from '../components/PageHero';
 import Reveal from '../components/Reveal';
 import { fallbackNews, loadNews, NewsItem } from '../data/news';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export default function NewsDetail() {
   const { id } = useParams();
   const numericId = Number(id);
   const [news, setNews] = useState<NewsItem[]>(fallbackNews);
   const [loading, setLoading] = useState(true);
+  const { language, t } = useLanguage();
 
   useEffect(() => {
     loadNews().then((items) => {
@@ -23,8 +25,8 @@ export default function NewsDetail() {
   const related = news.filter((entry) => entry.id !== numericId).slice(0, 3);
 
   useEffect(() => {
-    if (item) document.title = `${item.title} | مجلس الأعمال السوري المصري`;
-  }, [item]);
+    if (item) document.title = `${t(item.title)} | ${language === 'ar' ? 'مجلس الأعمال السوري المصري' : 'Syrian Egyptian Business Council'}`;
+  }, [item, language, t]);
 
   if (loading) {
     return (

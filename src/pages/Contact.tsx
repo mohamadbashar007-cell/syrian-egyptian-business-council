@@ -75,11 +75,11 @@ export default function Contact() {
                     <div className="flex flex-col gap-2">
                        <label className="text-[14px] font-bold text-text-dark">الموضوع <span className="text-red-500">*</span></label>
                        <select name="subject" className="cursor-pointer appearance-none rounded-xl border border-gray-200 bg-gray-bg p-3.5 text-[14px] outline-none transition-all focus:border-green-primary focus:bg-white focus:ring-4 focus:ring-green-primary/5" required>
-                          <option>استفسار عام</option>
-                          <option>فرصة استثمارية</option>
-                          <option>طلب عضوية</option>
-                          <option>شراكة استراتيجية</option>
-                          <option>أخرى</option>
+                          <option value="استفسار عام">استفسار عام</option>
+                          <option value="فرصة استثمارية">فرصة استثمارية</option>
+                          <option value="طلب عضوية">طلب عضوية</option>
+                          <option value="شراكة استراتيجية">شراكة استراتيجية</option>
+                          <option value="أخرى">أخرى</option>
                        </select>
                     </div>
 

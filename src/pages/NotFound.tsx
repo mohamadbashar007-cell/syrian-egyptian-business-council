@@ -2,13 +2,15 @@ import { ArrowLeft, Home, Newspaper, SearchX } from 'lucide-react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export default function NotFound() {
+  const { language } = useLanguage();
   useEffect(() => {
     const previousTitle = document.title;
-    document.title = 'الصفحة غير موجودة | مجلس الأعمال السوري المصري';
+    document.title = language === 'ar' ? 'الصفحة غير موجودة | مجلس الأعمال السوري المصري' : 'Page Not Found | Syrian Egyptian Business Council';
     return () => { document.title = previousTitle; };
-  }, []);
+  }, [language]);
 
   return (
     <Layout>

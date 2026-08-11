@@ -1,7 +1,8 @@
-import { ExternalLink, FileText, Calendar, Building } from 'lucide-react';
+import { Download, ExternalLink, FileText, Calendar, Building } from 'lucide-react';
 import Reveal from './Reveal';
 
 export default function DecreeSection() {
+  const decreePdf = `${import.meta.env.BASE_URL}documents/ministerial-decree-83-2026.pdf`;
   const members = [
     { name: 'السيد غسان كريم', role: 'رئيساً للمجلس' },
     { name: 'السيد أحمد راغب آغا', role: 'نائباً للرئيس' },
@@ -28,15 +29,25 @@ export default function DecreeSection() {
           </div>
         </div>
         
-        <a
-          href="https://thawra.sy/wp-content/uploads/2026/05/%D9%82%D8%B1%D8%A7%D8%B1.jpg"
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center gap-3 rounded-full bg-green-primary px-7 py-3.5 text-[13px] font-extrabold text-white shadow-lg transition-all hover:-translate-y-1 hover:bg-green-dark"
-        >
-          <span>عرض نص القرار الرسمي</span>
-          <ExternalLink size={18} />
-        </a>
+        <div className="flex flex-wrap gap-3">
+          <a
+            href={decreePdf}
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-3 rounded-full bg-green-primary px-6 py-3.5 text-[13px] font-extrabold text-white shadow-lg transition-all hover:-translate-y-1 hover:bg-green-dark"
+          >
+            <span>عرض نص القرار الرسمي</span>
+            <ExternalLink size={18} />
+          </a>
+          <a
+            href={decreePdf}
+            download="ministerial-decree-83-2026.pdf"
+            className="flex items-center gap-3 rounded-full border border-green-primary bg-white px-6 py-3.5 text-[13px] font-extrabold text-green-primary transition-all hover:-translate-y-1 hover:bg-green-light"
+          >
+            <span>تنزيل نسخة PDF</span>
+            <Download size={18} />
+          </a>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">

@@ -1,8 +1,9 @@
-import { Mail, Menu, Search, X } from 'lucide-react';
+import { Languages, Mail, Menu, Search, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import BrandMark from './BrandMark';
+import { useLanguage } from '../i18n/LanguageContext';
 
 const navLinks = [
   { name: 'الرئيسية', path: '/' },
@@ -17,6 +18,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const { isArabic, toggleLanguage } = useLanguage();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -83,7 +85,10 @@ export default function Header() {
             })}
           </nav>
 
-          <div className="hidden items-center gap-2 xl:flex">
+          <div className="hidden items-center gap-2 lg:flex">
+            <button data-no-translate type="button" onClick={toggleLanguage} aria-label={isArabic ? 'Switch to English' : 'Switch to Arabic'} className="inline-flex h-10 items-center gap-2 rounded-full border border-green-primary/20 px-3.5 text-[12px] font-extrabold text-green-primary transition-all hover:border-green-primary hover:bg-green-light">
+              <Languages size={16} /> {isArabic ? 'English' : 'العربية'}
+            </button>
             <Link to="/news" aria-label="البحث في الأخبار" className="grid h-10 w-10 place-items-center rounded-full border border-border-subtle text-text-muted transition-all hover:border-green-primary hover:bg-green-light hover:text-green-primary">
               <Search size={17} />
             </Link>
@@ -92,14 +97,19 @@ export default function Header() {
             </Link>
           </div>
 
-          <button
-            className="grid h-11 w-11 place-items-center rounded-xl border border-green-primary/15 bg-green-light/60 text-green-primary lg:hidden"
-            onClick={() => setIsMenuOpen((open) => !open)}
-            aria-label={isMenuOpen ? 'إغلاق القائمة' : 'فتح القائمة'}
-            aria-expanded={isMenuOpen}
-          >
-            {isMenuOpen ? <X size={23} /> : <Menu size={23} />}
-          </button>
+          <div className="flex items-center gap-2 lg:hidden">
+            <button data-no-translate type="button" onClick={toggleLanguage} aria-label={isArabic ? 'Switch to English' : 'Switch to Arabic'} className="inline-flex h-11 items-center gap-1.5 rounded-xl border border-green-primary/15 bg-white px-3 text-[11px] font-extrabold text-green-primary">
+              <Languages size={16} /> {isArabic ? 'EN' : 'عربي'}
+            </button>
+            <button
+              className="grid h-11 w-11 place-items-center rounded-xl border border-green-primary/15 bg-green-light/60 text-green-primary"
+              onClick={() => setIsMenuOpen((open) => !open)}
+              aria-label={isMenuOpen ? 'إغلاق القائمة' : 'فتح القائمة'}
+              aria-expanded={isMenuOpen}
+            >
+              {isMenuOpen ? <X size={23} /> : <Menu size={23} />}
+            </button>
+          </div>
         </div>
       </div>
 

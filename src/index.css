@@ -19,7 +19,7 @@
 
 body {
   @apply font-sans text-text-dark bg-gray-bg;
-  direction: rtl;
+  direction: inherit;
   margin: 0;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
